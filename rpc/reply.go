@@ -40,11 +40,11 @@ func Int(reply interface{}, err interface{}) (int, error) {
 // not equal to nil, then Int returns 0, err. Otherwise, Int64 converts the
 // reply to an int64 as follows:
 //
-//	Reply type    Result
-//	integer       reply, nil
-//	bulk string   parsed reply, nil
-//	nil           0, ErrNil
-//	other         0, error
+//  Reply type    Result
+//  integer       reply, nil
+//  bulk string   parsed reply, nil
+//  nil           0, ErrNil
+//  other         0, error
 func Int64(reply interface{}, err interface{}) (int64, error) {
 	switch e := err.(type) {
 	case string:
@@ -69,10 +69,10 @@ func Int64(reply interface{}, err interface{}) (int64, error) {
 // not equal to nil, then Float64 returns 0, err. Otherwise, Float64 converts
 // the reply to an int as follows:
 //
-//	Reply type    Result
-//	bulk string   parsed reply, nil
-//	nil           0, ErrNil
-//	other         0, error
+//  Reply type    Result
+//  bulk string   parsed reply, nil
+//  nil           0, ErrNil
+//  other         0, error
 func Float64(reply interface{}, err interface{}) (float64, error) {
 	switch e := err.(type) {
 	case string:
@@ -97,11 +97,11 @@ func Float64(reply interface{}, err interface{}) (float64, error) {
 // equal to nil, then String returns "", err. Otherwise String converts the
 // reply to a string as follows:
 //
-//	Reply type      Result
-//	bulk string     string(reply), nil
-//	simple string   reply, nil
-//	nil             "",  ErrNil
-//	other           "",  error
+//  Reply type      Result
+//  bulk string     string(reply), nil
+//  simple string   reply, nil
+//  nil             "",  ErrNil
+//  other           "",  error
 func String(reply interface{}, err interface{}) (string, error) {
 	switch e := err.(type) {
 	case string:
@@ -126,11 +126,11 @@ func String(reply interface{}, err interface{}) (string, error) {
 // is not equal to nil, then Bytes returns nil, err. Otherwise Bytes converts
 // the reply to a slice of bytes as follows:
 //
-//	Reply type      Result
-//	bulk string     reply, nil
-//	simple string   []byte(reply), nil
-//	nil             nil, ErrNil
-//	other           nil, error
+//  Reply type      Result
+//  bulk string     reply, nil
+//  simple string   []byte(reply), nil
+//  nil             nil, ErrNil
+//  other           nil, error
 func Bytes(reply interface{}, err interface{}) ([]byte, error) {
 	switch e := err.(type) {
 	case string:
