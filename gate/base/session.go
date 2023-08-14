@@ -17,6 +17,7 @@ package basegate
 
 import (
 	"fmt"
+	rpcpb "github.com/funmangic/mqant/rpc/pb"
 	"strconv"
 	"sync"
 
@@ -522,6 +523,26 @@ func (sesid *sessionagent) SendBatch(Sessionids string, topic string, body []byt
 		return 0, fmt.Sprintf("Service not found id(%s)", sesid.session.ServerId)
 	}
 	count, err := server.Call(nil, "SendBatch", log.CreateTrace(sesid.TraceId(), sesid.SpanId()), Sessionids, topic, body)
+	if err != "" {
+		return 0, err
+	}
+	return count.(int64), err
+}
+
+func (sesid *sessionagent) SendQueue(topics []string, bodies [][]byte) (int64, string) {
+	if sesid.app == nil {
+		return 0, fmt.Sprintf("Module.App is nil")
+	}
+	server, e := sesid.app.GetServerByID(sesid.session.ServerId)
+	if e != nil {
+		return 0, fmt.Sprintf("Service not found id(%s)", sesid.session.ServerId)
+	}
+	msg := &rpcpb.CallBackQueueMsg{
+		SessionId: sesid.GetSessionID(),
+		Topics:    topics,
+		Bodies:    bodies,
+	}
+	count, err := server.Call(nil, "SendQueue", log.CreateTrace(sesid.TraceId(), sesid.SpanId()), msg)
 	if err != "" {
 		return 0, err
 	}

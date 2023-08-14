@@ -269,6 +269,7 @@ func (gt *Gate) OnInit(subclass module.RPCModule, app module.App, settings *conf
 	gt.GetServer().RegisterGO("Remove", gt.opts.GateHandler.Remove)
 	gt.GetServer().RegisterGO("Send", gt.opts.GateHandler.Send)
 	gt.GetServer().RegisterGO("SendBatch", gt.opts.GateHandler.SendBatch)
+	gt.GetServer().RegisterGO("SendQueue", gt.opts.GateHandler.SendQueue)
 	gt.GetServer().RegisterGO("BroadCast", gt.opts.GateHandler.BroadCast)
 	gt.GetServer().RegisterGO("IsConnect", gt.opts.GateHandler.IsConnect)
 	gt.GetServer().RegisterGO("Close", gt.opts.GateHandler.Close)

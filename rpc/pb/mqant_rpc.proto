@@ -20,3 +20,9 @@ message ResultInfo {
     string ResultType = 4;
     bytes Result = 5;
 }
+
+message CallBackQueueMsg {
+    string session_id = 1;
+    repeated string topics = 2;
+    repeated bytes bodies = 3;
+}

@@ -17,6 +17,7 @@ package basegate
 
 import (
 	"fmt"
+	rpcpb "github.com/funmangic/mqant/rpc/pb"
 	"runtime"
 
 	"github.com/funmangic/mqant/gate"
@@ -303,6 +304,26 @@ func (h *handler) SendBatch(span log.TraceSpan, SessionidStr string, topic strin
 		if !ok || agent == nil {
 			continue
 		}
+		e := agent.(gate.Agent).WriteMsg(topic, body)
+		if e != nil {
+			log.Warning("WriteMsg error: %v", e.Error())
+		} else {
+			count++
+		}
+	}
+	return count, ""
+}
+func (h *handler) SendQueue(span log.TraceSpan, msg *rpcpb.CallBackQueueMsg) (int64, string) {
+	var count int64 = 0
+	sessionID := msg.SessionId
+	topics := msg.Topics
+	bodies := msg.Bodies
+	for i, topic := range topics {
+		agent, ok := h.sessions.Load(sessionID)
+		if !ok || agent == nil {
+			break
+		}
+		body := bodies[i]
 		e := agent.(gate.Agent).WriteMsg(topic, body)
 		if e != nil {
 			log.Warning("WriteMsg error: %v", e.Error())

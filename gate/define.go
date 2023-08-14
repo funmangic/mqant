@@ -18,6 +18,7 @@ package gate
 import (
 	"github.com/funmangic/mqant/log"
 	"github.com/funmangic/mqant/network"
+	rpcpb "github.com/funmangic/mqant/rpc/pb"
 	"time"
 )
 
@@ -41,6 +42,7 @@ type GateHandler interface {
 	Push(span log.TraceSpan, Sessionid string, Settings map[string]string) (result Session, err string)    //推送信息给Session
 	Send(span log.TraceSpan, Sessionid string, topic string, body []byte) (result interface{}, err string) //Send message
 	SendBatch(span log.TraceSpan, Sessionids string, topic string, body []byte) (int64, string)            //批量发送
+	SendQueue(span log.TraceSpan, msg *rpcpb.CallBackQueueMsg) (int64, string)                             //队列发送
 	BroadCast(span log.TraceSpan, topic string, body []byte) (int64, string)                               //广播消息给网关所有在连客户端
 	//查询某一个userId是否连接中，这里只是查询这一个网关里面是否有userId客户端连接，如果有多个网关就需要遍历了
 	IsConnect(span log.TraceSpan, Sessionid string, Userid string) (result bool, err string)
@@ -105,7 +107,8 @@ type Session interface {
 	Remove(key string) (err string)
 	Send(topic string, body []byte) (err string)
 	SendNR(topic string, body []byte) (err string)
-	SendBatch(Sessionids string, topic string, body []byte) (int64, string) //想该客户端的网关批量发送消息
+	SendBatch(Sessionids string, topic string, body []byte) (int64, string) //向该客户端的网关批量发送消息
+	SendQueue(topics []string, bodies [][]byte) (int64, string)             //向该客户端的网关发送queue消息
 	//查询某一个userId是否连接中，这里只是查询这一个网关里面是否有userId客户端连接，如果有多个网关就需要遍历了
 	IsConnect(Userid string) (result bool, err string)
 	//是否是访客(未登录) ,默认判断规则为 userId==""代表访客
